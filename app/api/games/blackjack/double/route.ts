@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { requireSession } from '@/lib/auth/guards';
 import { prisma } from '@/lib/prisma';
 import { hit as bjHit, stand as bjStand, settle } from '@/lib/blackjack-engine';
-import { GemTransactionType, BlackjackStatus } from '@prisma/client';
+import { GemTransactionType, BlackjackStatus, Prisma } from '@prisma/client';
 import { recordGemTransaction } from '@/lib/ledger';
 
 const schema = z.object({
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
     await tx.blackjackSession.update({
       where: { id: sessionId },
-      data: { bet: newBet, state: stood, status: stood.status as BlackjackStatus },
+      data: { bet: newBet, state: stood as Prisma.InputJsonValue, status: stood.status as BlackjackStatus },
     });
 
     return { state: stood, payout, balance };

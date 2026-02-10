@@ -4,7 +4,7 @@ import { requireSession } from '@/lib/auth/guards';
 import { getGameConfig } from '@/lib/config';
 import { prisma } from '@/lib/prisma';
 import { startBlackjack, settle } from '@/lib/blackjack-engine';
-import { GemTransactionType, BlackjackStatus } from '@prisma/client';
+import { GemTransactionType, BlackjackStatus, Prisma } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import { recordGemTransaction } from '@/lib/ledger';
 
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         id: refId,
         userId: session.user!.id,
         bet,
-        state: { ...state, status },
+        state: { ...state, status } as Prisma.InputJsonValue,
         status,
       },
     });

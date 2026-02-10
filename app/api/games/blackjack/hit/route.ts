@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { requireSession } from '@/lib/auth/guards';
 import { prisma } from '@/lib/prisma';
 import { hit as bjHit, handValue } from '@/lib/blackjack-engine';
-import { BlackjackStatus } from '@prisma/client';
+import { BlackjackStatus, Prisma } from '@prisma/client';
 
 const schema = z.object({
   sessionId: z.string().min(1),
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
 
   await prisma.blackjackSession.update({
     where: { id: sessionId },
-    data: { state, status },
+    data: { state: state as Prisma.InputJsonValue, status },
   });
 
   return NextResponse.json({ ok: true, state: sanitize({ ...state, status }) });
