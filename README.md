@@ -4,6 +4,46 @@ Entertainment-only, gems-only casino-style arcade built on Next.js App Router wi
 
 **No real money. No prizes. No withdrawals. 18+ only.**
 
+## 🚀 Quick Start
+
+### Local Development
+
+1. **Clone and install dependencies:**
+   ```bash
+   git clone https://github.com/Logicnd/GemCasinoArcade.git
+   cd GemCasinoArcade
+   npm install
+   ```
+
+2. **Set up environment variables:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your database credentials
+   ```
+
+3. **Set up the database:**
+   ```bash
+   npx prisma migrate dev
+   npm run db:seed
+   ```
+
+4. **Start development server:**
+   ```bash
+   npm run dev
+   ```
+
+5. **Visit http://localhost:3000**
+
+### Production Deployment
+
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for a complete guide to deploying on Vercel with step-by-step instructions and troubleshooting.
+
+Quick deployment checklist:
+- Set up PostgreSQL database (Vercel Postgres recommended)
+- Configure environment variables in Vercel
+- Set build command: `npx prisma migrate deploy && npx prisma generate && npm run build`
+- Deploy!
+
 ## Stack
 - Next.js 16 (App Router) + TypeScript + Tailwind
 - Prisma ORM + PostgreSQL
@@ -11,13 +51,19 @@ Entertainment-only, gems-only casino-style arcade built on Next.js App Router wi
 - Zod validation on every API route
 - Vitest for unit/integration tests
 
-## Environment
-Create a `.env` (see `.env.example`):
-```
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/gem_casino"
-NEXTAUTH_SECRET="generate-a-strong-secret"
-NEXTAUTH_URL="http://localhost:3000"
+## Environment Variables
+
+Required variables (see `.env.example` for detailed documentation):
+```bash
+DATABASE_URL="postgresql://user:password@host:5432/database"
+NEXTAUTH_SECRET="generate-with-openssl-rand-base64-32"
+NEXTAUTH_URL="http://localhost:3000"  # or your production URL
 BCRYPT_ROUNDS=12
+```
+
+Generate a secure `NEXTAUTH_SECRET`:
+```bash
+openssl rand -base64 32
 ```
 
 ## Database / Prisma
@@ -44,13 +90,11 @@ The schema covers: users, sessions, audit logs, gem ledger, configs (site/game/c
 - Analytics API: RTP per game + net gem flow.
 - Age gate overlay + global disclaimer.
 
-## Deployment (Vercel)
-1) Set env vars in Vercel: `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`.  
-2) Ensure the Postgres instance is reachable from Vercel.  
-3) Run `prisma migrate deploy` as a build step or via Vercel Postgres integration.  
-4) Push to GitHub and connect the repo; Vercel will build with `npm run build`.
+## 📚 Documentation
 
-Need a beginner-friendly walkthrough? See [docs/vercel-setup.md](docs/vercel-setup.md).
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Complete deployment guide with troubleshooting
+- **[docs/vercel-setup.md](docs/vercel-setup.md)** - Beginner-friendly Vercel setup walkthrough
+- **[.env.example](.env.example)** - Environment variables template with explanations
 
 ## Safety / Compliance
 - Entertainment only, virtual gems only, no purchase/withdraw flows.
