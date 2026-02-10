@@ -15,7 +15,7 @@ const credentialsSchema = z.object({
 export const authOptions: NextAuthOptions = {
   secret: authSecret,
   adapter: PrismaAdapter(prisma),
-  session: { strategy: 'database' },
+  session: { strategy: 'jwt' },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -52,14 +52,25 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = (user as any).id;
+        token.username = (user as any).username;
+        token.roles = (user as any).roles;
+        token.publicTag = (user as any).publicTag;
+        token.equippedTitleId = (user as any).equippedTitleId;
+        token.isBanned = (user as any).isBanned;
+      }
+      return token;
+    },
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = user.id;
-        session.user.username = user.username;
-        session.user.roles = user.roles;
-        session.user.publicTag = user.publicTag ?? undefined;
-        session.user.equippedTitleId = user.equippedTitleId ?? undefined;
-        session.user.isBanned = user.isBanned;
+        session.user.id = token.id as string;
+        session.user.username = token.username as string;
+        session.user.roles = (token.roles as string[]) ?? [];
+        session.user.publicTag = (token.publicTag as string) ?? undefined;
+        session.user.equippedTitleId = (token.equippedTitleId as string) ?? undefined;
+        session.user.isBanned = token.isBanned as boolean;
       }
       return session;
     },
