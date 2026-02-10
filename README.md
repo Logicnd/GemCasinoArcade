@@ -4,6 +4,16 @@ Entertainment-only, gems-only casino-style arcade built on Next.js App Router wi
 
 **No real money. No prizes. No withdrawals. 18+ only.**
 
+---
+
+## 🎯 New to Deployment? Start Here!
+
+**[→ QUICKSTART.md](QUICKSTART.md)** - Deploy to Vercel in 5 steps (beginner-friendly)
+
+Already familiar with deployment? Continue reading below for local development setup.
+
+---
+
 ## 🚀 Quick Start
 
 ### Local Development
@@ -92,10 +102,11 @@ The schema covers: users, sessions, audit logs, gem ledger, configs (site/game/c
 
 ## 📚 Documentation
 
-- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Complete deployment guide with troubleshooting
-- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common errors and how to fix them
-- **[API.md](API.md)** - Complete API endpoint reference
-- **[docs/vercel-setup.md](docs/vercel-setup.md)** - Beginner-friendly Vercel setup walkthrough
+- **[QUICKSTART.md](QUICKSTART.md)** - 🚀 Deploy to Vercel in 5 steps (start here!)
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Complete deployment guide with detailed instructions
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common errors and how to fix them (401, 405, 500, etc.)
+- **[API.md](API.md)** - Complete API endpoint reference with examples
+- **[docs/vercel-setup.md](docs/vercel-setup.md)** - Beginner-friendly Vercel walkthrough
 - **[.env.example](.env.example)** - Environment variables template with explanations
 
 ## Safety / Compliance
