@@ -6,7 +6,7 @@ import { updateGameConfig } from '@/lib/config';
 
 const updateSchema = z.object({
   key: z.string().min(1),
-  config: z.record(z.any()),
+  config: z.record(z.string(), z.any()),
   enabled: z.boolean().optional(),
 });
 
