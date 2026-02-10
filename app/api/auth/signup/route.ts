@@ -18,19 +18,22 @@ const signupSchema = z.object({
 });
 
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => null);
-  const parsed = signupSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid input', details: parsed.error.format() }, { status: 400 });
-  }
-
-  const { username, password, publicTag } = parsed.data;
-  const passwordHash = await hash(password, Number(process.env.BCRYPT_ROUNDS ?? 12));
-
   try {
+    const body = await req.json().catch(() => null);
+    const parsed = signupSchema.safeParse(body);
+    if (!parsed.success) {
+      console.error('[Signup] Validation error:', parsed.error.format());
+      return NextResponse.json({ error: 'Invalid input', details: parsed.error.format() }, { status: 400 });
+    }
+
+    const { username, password, publicTag } = parsed.data;
+
     const user = await prisma.$transaction(async (tx) => {
       const existing = await tx.user.findUnique({ where: { username } });
       if (existing) throw new Error('Username taken');
+
+      // Hash password after username check to avoid unnecessary computation
+      const passwordHash = await hash(password, Number(process.env.BCRYPT_ROUNDS ?? 12));
 
       const userCount = await tx.user.count();
       const roles: Role[] = rolesForNewUser(userCount);
@@ -54,9 +57,10 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true, userId: user.id, roles: user.roles });
-  } catch (err: any) {
-    const message = err?.message === 'Username taken' ? 'Username already in use' : 'Signup failed';
-    const status = err?.message === 'Username taken' ? 409 : 500;
+  } catch (err: unknown) {
+    console.error('[Signup] Error:', err);
+    const message = err instanceof Error && err.message === 'Username taken' ? 'Username already in use' : 'Signup failed';
+    const status = err instanceof Error && err.message === 'Username taken' ? 409 : 500;
     return NextResponse.json({ error: message }, { status });
   }
 }

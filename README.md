@@ -52,6 +52,10 @@ The schema covers: users, sessions, audit logs, gem ledger, configs (site/game/c
 
 Need a beginner-friendly walkthrough? See [docs/vercel-setup.md](docs/vercel-setup.md).
 
+**Having deployment issues?** Check [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for common problems and solutions.
+
+**Quick Health Check:** Visit `/api/health` on your deployed site to verify everything is configured correctly.
+
 ## Safety / Compliance
 - Entertainment only, virtual gems only, no purchase/withdraw flows.
 - Age gate + responsible play self-limits.
