@@ -40,7 +40,7 @@ export async function POST(req: Request) {
 
   await prisma.blackjackSession.update({
     where: { id: sessionId },
-    data: { state: state as Prisma.InputJsonValue, status },
+    data: { state: state as unknown as Prisma.InputJsonValue, status },
   });
 
   return NextResponse.json({ ok: true, state: sanitize({ ...state, status }) });

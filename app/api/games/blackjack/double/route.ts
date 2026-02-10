@@ -44,7 +44,7 @@ export async function POST(req: Request) {
 
     const newBet = game.bet * 2;
     const state = bjHit(game.state as any, 'player');
-    const stood = bjStand(state);
+    const stood = bjStand(state) as any;
     const payout = settle(stood as any, newBet);
     let balance: number | null = null;
     if (payout > 0) {
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
     await tx.blackjackSession.update({
       where: { id: sessionId },
-      data: { bet: newBet, state: stood as Prisma.InputJsonValue, status: stood.status as BlackjackStatus },
+      data: { bet: newBet, state: stood as unknown as Prisma.InputJsonValue, status: stood.status as BlackjackStatus },
     });
 
     return { state: stood, payout, balance };

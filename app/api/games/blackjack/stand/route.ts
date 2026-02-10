@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     if (!game || game.userId !== session.user!.id) throw new Error('Session not found');
     if (game.status !== BlackjackStatus.ACTIVE) throw new Error('Session finished');
 
-    const state = bjStand(game.state as any);
+    const state = bjStand(game.state as any) as any;
     const payout = settle(state as any, game.bet);
     let balance: number | null = null;
     if (payout > 0) {
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
 
     await tx.blackjackSession.update({
       where: { id: sessionId },
-      data: { state: state as Prisma.InputJsonValue, status: state.status as BlackjackStatus },
+      data: { state: state as unknown as Prisma.InputJsonValue, status: state.status as BlackjackStatus },
     });
 
     return { state, payout, balance };

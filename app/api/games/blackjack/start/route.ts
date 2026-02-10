@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   const refId = randomUUID();
   const balance = await prisma.$transaction(async (tx) => {
     await recordGemTransaction(session.user!.id, -bet, GemTransactionType.BLACKJACK_BET, refId, tx, {});
-    const state = startBlackjack();
+    const state = startBlackjack() as any;
 
     let status: BlackjackStatus = BlackjackStatus.ACTIVE;
     let payout = 0;
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         id: refId,
         userId: session.user!.id,
         bet,
-        state: { ...state, status } as Prisma.InputJsonValue,
+        state: { ...state, status } as unknown as Prisma.InputJsonValue,
         status,
       },
     });
