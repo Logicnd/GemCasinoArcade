@@ -93,6 +93,8 @@ The schema covers: users, sessions, audit logs, gem ledger, configs (site/game/c
 ## 📚 Documentation
 
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Complete deployment guide with troubleshooting
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common errors and how to fix them
+- **[API.md](API.md)** - Complete API endpoint reference
 - **[docs/vercel-setup.md](docs/vercel-setup.md)** - Beginner-friendly Vercel setup walkthrough
 - **[.env.example](.env.example)** - Environment variables template with explanations
 

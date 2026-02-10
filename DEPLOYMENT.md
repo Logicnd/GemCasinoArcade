@@ -111,6 +111,10 @@ The seed script creates:
 
 ## Troubleshooting Common Errors
 
+For detailed troubleshooting of specific errors (405, 401, 500, validation errors, etc.), see **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)**.
+
+Quick reference:
+
 ### Error: "Signup failed" (500)
 
 **Causes:**
