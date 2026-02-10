@@ -4,6 +4,13 @@ import { randomUUID } from 'crypto';
 
 type WithTx = PrismaClient | Prisma.TransactionClient;
 
+function runTransaction<T>(tx: WithTx, fn: (trx: Prisma.TransactionClient) => Promise<T>) {
+  if (typeof (tx as PrismaClient).$transaction === 'function') {
+    return (tx as PrismaClient).$transaction(fn);
+  }
+  return prismaClient.$transaction(fn);
+}
+
 export async function getSiteConfig(tx: WithTx = prismaClient): Promise<SiteConfig> {
   const config = await tx.siteConfig.findUnique({ where: { id: 1 } });
   if (!config) {
@@ -28,7 +35,7 @@ export async function updateSiteConfig(
   userId: string,
   tx: WithTx = prismaClient
 ) {
-  return tx.$transaction(async (trx) => {
+  return runTransaction(tx, async (trx) => {
     const current = await getSiteConfig(trx);
     await trx.siteConfigHistory.create({
       data: { ...current, id: randomUUID(), updatedByUserId: current.updatedByUserId },
@@ -55,13 +62,13 @@ export async function updateGameConfig(
   userId: string,
   tx: WithTx = prismaClient
 ) {
-  return tx.$transaction(async (trx) => {
+  return runTransaction(tx, async (trx) => {
     const current = await getGameConfig(key, trx);
     await trx.gameConfigHistory.create({
       data: {
         key: current.key,
         enabled: current.enabled,
-        config: current.config,
+        config: current.config as unknown as Prisma.InputJsonValue,
         version: current.version,
         updatedAt: current.updatedAt,
         updatedByUserId: current.updatedByUserId,
@@ -70,7 +77,7 @@ export async function updateGameConfig(
     const next = await trx.gameConfig.update({
       where: { key },
       data: {
-        config: data.config ?? current.config,
+        config: (data.config ?? current.config) as unknown as Prisma.InputJsonValue,
         enabled: typeof data.enabled === 'boolean' ? data.enabled : current.enabled,
         version: current.version + 1,
         updatedByUserId: userId,

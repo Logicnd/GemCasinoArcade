@@ -71,6 +71,12 @@ export const authOptions: NextAuthOptions = {
   cookies: {
     sessionToken: {
       name: 'gca.session-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
     },
   },
 };

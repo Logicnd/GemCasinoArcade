@@ -31,7 +31,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         <div className="min-h-screen flex flex-col">
-          {/* @ts-expect-error Async Server Component */}
           <AppHeader />
           <div className="flex-1 flex flex-col">{children}</div>
           <footer className="border-t border-border/60 bg-black/30 text-xs text-zinc-400 p-4 text-center">

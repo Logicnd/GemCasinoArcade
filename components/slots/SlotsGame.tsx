@@ -15,7 +15,7 @@ export default function SlotsGame() {
   const addGems = usePlayerStore((state) => state.addGems);
   const settings = usePlayerStore((state) => state.settings);
 
-  const [bet, setBet] = useState(ECONOMY.MIN_BET);
+  const [bet, setBet] = useState<number>(ECONOMY.MIN_BET);
   const [isSpinning, setIsSpinning] = useState(false);
   const [result, setResult] = useState<SpinResult | null>(null);
   const [error, setError] = useState<string | null>(null);

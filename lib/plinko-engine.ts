@@ -6,6 +6,8 @@ export interface PlinkoConfig {
   rows: number[];
   risks: Risk[];
   multipliers: Record<Risk, number[]>;
+  minBet?: number;
+  maxBet?: number;
 }
 
 export function generatePath(rows: number) {
