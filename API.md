@@ -2,6 +2,59 @@
 
 Complete reference for all API endpoints in Gem Casino Arcade.
 
+## System
+
+### GET /api/health
+
+Health check endpoint to verify the application is properly configured.
+
+**Authentication:** Not required
+
+**Response (Healthy - 200):**
+```json
+{
+  "status": "ok",
+  "message": "Application is healthy",
+  "database": "connected",
+  "environment": "configured",
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
+```
+
+**Response (Warning - 200):**
+```json
+{
+  "status": "warning",
+  "message": "Application is running but some environment variables are missing",
+  "database": "connected",
+  "environment": {
+    "DATABASE_URL": true,
+    "NEXTAUTH_SECRET": false,
+    "NEXTAUTH_URL": true
+  },
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
+```
+
+**Response (Error - 503):**
+```json
+{
+  "status": "error",
+  "message": "Health check failed",
+  "database": "disconnected",
+  "error": "Connection refused",
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
+```
+
+**Use this endpoint to:**
+- Verify deployment is successful
+- Check database connectivity
+- Validate environment variable configuration
+- Set up monitoring/alerting
+
+---
+
 ## Authentication
 
 ### POST /api/auth/signup

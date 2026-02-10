@@ -241,10 +241,13 @@ postgresql://user:pass@region.neon.tech/dbname?sslmode=require
 
 ## Verifying Deployment Success
 
-1. **Check Homepage:** Visit your Vercel URL - it should load without errors
-2. **Test Signup:** Go to `/signup` and create a test account
-3. **Test Login:** Go to `/login` and sign in with your test account
-4. **Check API:** Visit `/api/me` - should return user data if logged in
+1. **Check Health Endpoint:** Visit `/api/health` - should return `{"status":"ok"}` if everything is configured correctly
+   - If status is "warning": check environment variables
+   - If status is "error": database connection issue
+2. **Check Homepage:** Visit your Vercel URL - it should load without errors
+3. **Test Signup:** Go to `/signup` and create a test account
+4. **Test Login:** Go to `/login` and sign in with your test account
+5. **Check API:** Visit `/api/me` - should return user data if logged in
 
 ## Security Checklist
 
