@@ -50,6 +50,8 @@ The schema covers: users, sessions, audit logs, gem ledger, configs (site/game/c
 3) Run `prisma migrate deploy` as a build step or via Vercel Postgres integration.  
 4) Push to GitHub and connect the repo; Vercel will build with `npm run build`.
 
+Need a beginner-friendly walkthrough? See [docs/vercel-setup.md](docs/vercel-setup.md).
+
 ## Safety / Compliance
 - Entertainment only, virtual gems only, no purchase/withdraw flows.
 - Age gate + responsible play self-limits.

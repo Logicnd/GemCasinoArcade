@@ -8,7 +8,13 @@ import { rolesForNewUser } from '@/lib/auth/utils';
 const signupSchema = z.object({
   username: z.string().min(3).max(32).regex(/^[a-zA-Z0-9_]+$/),
   password: z.string().min(8).max(128),
-  publicTag: z.string().min(1).max(20).optional(),
+  publicTag: z.preprocess(
+    (value) => {
+      if (typeof value === 'string' && value.trim() === '') return undefined;
+      return value;
+    },
+    z.string().min(1).max(20).optional()
+  ),
 });
 
 export async function POST(req: Request) {

@@ -12,10 +12,14 @@ export default function SignupPage() {
     e.preventDefault();
     setError(null);
     const form = new FormData(e.currentTarget);
+    const username = form.get('username');
+    const password = form.get('password');
+    const publicTagRaw = form.get('publicTag');
+    const publicTag = typeof publicTagRaw === 'string' ? publicTagRaw.trim() : '';
     const payload = {
-      username: form.get('username'),
-      password: form.get('password'),
-      publicTag: form.get('publicTag'),
+      username,
+      password,
+      ...(publicTag ? { publicTag } : {}),
     };
     const res = await fetch('/api/auth/signup', {
       method: 'POST',
