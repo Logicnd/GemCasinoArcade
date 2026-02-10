@@ -2,6 +2,8 @@
 
 This guide gets the site fully working on Vercel, step by step. It assumes you are new and want every piece explained.
 
+**Having issues?** See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions to common problems.
+
 ## 0) What you are deploying
 - This app is a Next.js site with server routes (API) and a Postgres database using Prisma.
 - Auth is handled by NextAuth (credentials login).
