@@ -18,16 +18,17 @@ const signupSchema = z.object({
 });
 
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => null);
-  const parsed = signupSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid input', details: parsed.error.format() }, { status: 400 });
-  }
-
-  const { username, password, publicTag } = parsed.data;
-  const passwordHash = await hash(password, Number(process.env.BCRYPT_ROUNDS ?? 12));
-
   try {
+    const body = await req.json().catch(() => null);
+    const parsed = signupSchema.safeParse(body);
+    if (!parsed.success) {
+      console.error('[Signup] Validation error:', parsed.error.format());
+      return NextResponse.json({ error: 'Invalid input', details: parsed.error.format() }, { status: 400 });
+    }
+
+    const { username, password, publicTag } = parsed.data;
+    const passwordHash = await hash(password, Number(process.env.BCRYPT_ROUNDS ?? 12));
+
     const user = await prisma.$transaction(async (tx) => {
       const existing = await tx.user.findUnique({ where: { username } });
       if (existing) throw new Error('Username taken');
@@ -55,6 +56,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true, userId: user.id, roles: user.roles });
   } catch (err: any) {
+    console.error('[Signup] Error:', err);
     const message = err?.message === 'Username taken' ? 'Username already in use' : 'Signup failed';
     const status = err?.message === 'Username taken' ? 409 : 500;
     return NextResponse.json({ error: message }, { status });

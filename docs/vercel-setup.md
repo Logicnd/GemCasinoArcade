@@ -100,15 +100,49 @@ If signup still fails, it is usually because:
 - `/api/auth/error`: auth server failed to boot (missing env or DB issue)
 - `Signup failed`: the signup API hit an internal error (usually DB not ready)
 - Prisma errors mentioning `P1001` or `P1002`: cannot connect to database
+- `405 Method Not Allowed` on `/api/auth/signup`: This usually means:
+  - The build didn't complete successfully
+  - There's a stale cache on Vercel (try redeploying)
+  - The API route file didn't get deployed (check deployment logs)
+  - Make sure your build command is correct (see step 3)
 
-## 7) Quick checklist
+## 7) Fixing 405 Method Not Allowed errors
+If you see "405 Method Not Allowed" when trying to signup:
+
+1. **Check Vercel Deployment Logs**:
+   - Go to your project on Vercel
+   - Click on the latest deployment
+   - Check the build logs for any errors
+
+2. **Clear Vercel Cache**:
+   - Go to Project Settings -> General
+   - Scroll down and click "Clear Build Cache"
+   - Redeploy the project
+
+3. **Verify Build Command**:
+   - Settings -> Build & Output -> Build Command should be:
+   ```
+   npx prisma migrate deploy && npx prisma generate && npm run build
+   ```
+
+4. **Check Environment Variables**:
+   - All required env vars must be set (see step 2)
+   - After adding/changing env vars, you MUST redeploy
+
+5. **Verify Route Files**:
+   - In deployment logs, look for `/api/auth/signup` in the routes list
+   - If it's missing, there's a build issue
+
+## 8) Quick checklist
 - [ ] `DATABASE_URL` is correct and accessible from the internet
 - [ ] `NEXTAUTH_SECRET` is set (long random value)
 - [ ] `NEXTAUTH_URL` matches your Vercel domain
 - [ ] Build Command includes `prisma migrate deploy`
 - [ ] Redeployed after env var changes
+- [ ] Build completed successfully (check logs)
+- [ ] Database tables were created (migrations ran)
 
-## 8) API routes included in this project
+## 9) API routes included in this project
 All API routes live in `app/api`:
 
 Auth:
@@ -144,7 +178,7 @@ Owner (requires role):
 - `POST /api/owner/roles`
 - `POST /api/owner/site-config`
 
-## 9) If you want me to customize for your provider
+## 10) If you want me to customize for your provider
 Send me:
 - The database provider name (what "base44" actually is)
 - The connection string format they give you
