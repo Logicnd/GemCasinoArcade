@@ -5,12 +5,15 @@ import { compare } from 'bcrypt';
 import { z } from 'zod';
 import { prisma } from '../prisma';
 
+const authSecret = process.env.NEXTAUTH_SECRET ?? 'dev-secret-change-me';
+
 const credentialsSchema = z.object({
   username: z.string().min(3).max(32),
   password: z.string().min(8).max(128),
 });
 
 export const authOptions: NextAuthOptions = {
+  secret: authSecret,
   adapter: PrismaAdapter(prisma),
   session: { strategy: 'database' },
   providers: [
