@@ -37,10 +37,10 @@ export async function GET() {
   try {
     await prisma.$queryRaw`SELECT 1`;
     checks.database = { status: 'ok' };
-  } catch (err: any) {
+  } catch (err: unknown) {
     checks.database = {
       status: 'error',
-      message: err?.message || 'Database connection failed',
+      message: err instanceof Error ? err.message : 'Database connection failed',
     };
     allHealthy = false;
   }
@@ -53,7 +53,7 @@ export async function GET() {
   try {
     await prisma.user.count();
     checks.migrations = { status: 'ok' };
-  } catch (err: any) {
+  } catch (err: unknown) {
     checks.migrations = {
       status: 'error',
       message: 'User table not found - migrations may not have run',
